@@ -83,10 +83,10 @@ class DMP1Dim:
         :return: temporal derivative of the z2 state variable
         """
         z = self.system_state
-        return (-self.params.alpha_y*self.params.beta_y/self.params.tao) * z[0]\
+        return (-self.params.alpha_y*self.params.beta_y/pow(self.params.tao, 2)) * z[0]\
             - (self.params.alpha_y/self.params.tao) * z[1]\
-            + (self.params.alpha_y*self.params.beta_y/self.params.tao)*self.params.g\
-            + self.f()/self.params.tao
+            + (self.params.alpha_y*self.params.beta_y/pow(self.params.tao, 2))*self.params.g\
+            + z[2]*self.f()/pow(self.params.tao, 2)
 
 
     def get_z3_dot(self) -> ParameterType:
