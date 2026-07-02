@@ -85,29 +85,30 @@ def plot_states(
     """
     Plots z1, z2, and z3 as functions of time.
     """
+    fig, axes = plt.subplots(3, 1, sharex=True, figsize=(8, 6))
 
-    plt.figure()
+    labels = ["z1", "z2", "z3"]
 
-    plt.plot(times, states[:, 0], label="z1")
-    #plt.plot(times, states[:, 1], label="z2")
-    #plt.plot(times, states[:, 2], label="z3")
+    for i, ax in enumerate(axes):
+        ax.plot(times, states[:, i], label=labels[i])
+        ax.set_ylabel(labels[i])
+        ax.legend()
+        ax.grid(True)
 
-    plt.xlabel("Time")
-    plt.ylabel("State value")
-    plt.title("3-State System Evolution")
-    plt.legend()
-    plt.grid(True)
+    axes[-1].set_xlabel("Time")
 
+    fig.suptitle("System State Evolution (z1, z2, z3)")
+    plt.tight_layout()
     plt.show()
 
 # alpha_y = 25 beta_y = alpha_y/4 (for critical damping)
 # alpha_x not used yet, thus simply set to 1
 # tao = 0.2
 # g = 1
-dmp_param = DMPParam(25, 6.25, 1, 0.02, 1)
-dmp_basis = GaussianBasis(np.zeros(1), np.zeros(1))
-dmp = DMP1Dim(dmp_basis, dmp_param)
+dmp_param = DMPParam(25, 6.25, 5, 0.02, 5)
+dmp_basis = GaussianBasis(np.random.rand(150), np.random.rand(150))
+dmp = DMP1Dim(dmp_basis, dmp_param, np.random.randint(10000, size=dmp_basis.get_size())-5000)
 steps = 100
 
-times, states = simulate(dmp.execute, 2*dmp_param.tao/steps, steps, False)
+times, states = simulate(dmp.execute, 1.1*dmp_param.tao/steps, steps, False)
 plot_states(times, states)

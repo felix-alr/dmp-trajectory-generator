@@ -1,5 +1,4 @@
 import numpy as np
-
 from numpy.typing import (NDArray)
 from dataclasses import dataclass
 
@@ -26,15 +25,21 @@ class DMPParam:
         self.g = g
 
 class GaussianBasis:
-    ci: NDArray[ParameterType]
     hi: NDArray[ParameterType]
+    ci: NDArray[ParameterType]
 
-    def __init__(self, ci: NDArray[ParameterType], hi: NDArray[ParameterType]):
-        if ci.shape != hi.shape:
-            raise ValueError("NDArrays ci and hi must have the same shape.")
+    def __init__(self, hi: NDArray[ParameterType], ci: NDArray[ParameterType]):
+        if ci.shape != hi.shape and ci.ndim == 1:
+            raise ValueError("NDArrays ci and hi must have the same shape and can only be one-dimensional ndarrays.")
 
-        self.ci = ci
         self.hi = hi
+        self.ci = ci
+
+    def eval_at(self, x: ParameterType):
+        return np.exp(-1*self.hi * (x - self.ci))
+
+    def get_size(self):
+        return self.ci.shape[0]
 
 
 
@@ -47,22 +52,30 @@ class DMP1Dim:
     """
     basis: GaussianBasis
     params: DMPParam
+    wi: NDArray[ParameterType]
 
-    initial_system_state: NDArray[ParameterType]
-    system_state: NDArray[ParameterType]
+    initial_system_state: StateVectorType
+    system_state: StateVectorType
 
-    def __init__(self, basis: GaussianBasis, parameters: DMPParam, initial_state: StateVectorType | None = None):
+    def __init__(self, basis: GaussianBasis, parameters: DMPParam, weights: NDArray[ParameterType] | None = None, initial_state: StateVectorType | None = None):
         self.basis = basis
         self.params = parameters
 
         if initial_state is None:
             initial_state = np.array([0,0,1], ParameterType)
 
+        if weights is None:
+            weights = np.random.rand(basis.get_size())
+
         if initial_state.shape != (3,):
-            raise ValueError(f"Expected shape of initial_state to be (3,), got {initial_state.shape}")
+            raise ValueError(f"Expected shape of initial_state to be (3,), got {initial_state.shape} instead.")
+
+        if weights.shape != (basis.get_size(),):
+            raise ValueError(f"Expected shape of weights to be ({basis.get_size()}, ), got {weights.shape} instead.")
 
         self.initial_system_state = initial_state.copy()
         self.system_state = self.initial_system_state.copy()
+        self.wi = weights
 
 
 
@@ -117,7 +130,8 @@ class DMP1Dim:
         """
         :return: the learned force function output.
         """
-        return 0
+        psi = self.basis.eval_at(self.system_state[2])
+        return np.dot(self.wi, psi)/np.sum(psi)
 
 
     def execute(self, delta_t: ParameterType) -> StateVectorType:
