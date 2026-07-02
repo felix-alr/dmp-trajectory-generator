@@ -25,6 +25,18 @@ class DMPParam:
         self.tao = tao
         self.g = g
 
+class GaussianBasis:
+    ci: NDArray[ParameterType]
+    hi: NDArray[ParameterType]
+
+    def __init__(self, ci: NDArray[ParameterType], hi: NDArray[ParameterType]):
+        if ci.shape != hi.shape:
+            raise ValueError("NDArrays ci and hi must have the same shape.")
+
+        self.ci = ci
+        self.hi = hi
+
+
 
 class DMP1Dim:
     """
@@ -33,16 +45,14 @@ class DMP1Dim:
      - system parameters of type DMPParam
      - optionally: a user-defined initial system state
     """
-    ci: NDArray[ParameterType]
-    hi: NDArray[ParameterType]
+    basis: GaussianBasis
     params: DMPParam
 
     initial_system_state: NDArray[ParameterType]
     system_state: NDArray[ParameterType]
 
-    def __init__(self, ci: NDArray[ParameterType], hi: NDArray[ParameterType], parameters: DMPParam, initial_state: StateVectorType | None = None):
-        self.ci = ci
-        self.hi = hi
+    def __init__(self, basis: GaussianBasis, parameters: DMPParam, initial_state: StateVectorType | None = None):
+        self.basis = basis
         self.params = parameters
 
         if initial_state is None:

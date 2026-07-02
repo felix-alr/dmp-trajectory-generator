@@ -1,5 +1,5 @@
 """
-For reasons of efficiency, the code for graphing the system state variables over time (meaning the functions simulate and plot_states) has been created using ChatGPT model GPT-5.5 (Medium).
+For reasons of efficiency, the functions simulate and plot_states have been created using ChatGPT model GPT-5.5 (Medium).
 """
 
 import numpy as np
@@ -10,7 +10,7 @@ matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 from collections.abc import Callable
 from numpy.typing import NDArray
-from dmp import (DMPParam, DMP1Dim)
+from dmp import (DMPParam, DMP1Dim, GaussianBasis)
 
 StateVector = NDArray[np.float64]
 ExecuteFunction = Callable[[float], StateVector]
@@ -89,8 +89,8 @@ def plot_states(
     plt.figure()
 
     plt.plot(times, states[:, 0], label="z1")
-    plt.plot(times, states[:, 1], label="z2")
-    plt.plot(times, states[:, 2], label="z3")
+    #plt.plot(times, states[:, 1], label="z2")
+    #plt.plot(times, states[:, 2], label="z3")
 
     plt.xlabel("Time")
     plt.ylabel("State value")
@@ -100,10 +100,14 @@ def plot_states(
 
     plt.show()
 
+# alpha_y = 25 beta_y = alpha_y/4 (for critical damping)
+# alpha_x not used yet, thus simply set to 1
+# tao = 0.2
+# g = 1
+dmp_param = DMPParam(25, 6.25, 1, 0.02, 1)
+dmp_basis = GaussianBasis(np.zeros(1), np.zeros(1))
+dmp = DMP1Dim(dmp_basis, dmp_param)
+steps = 100
 
-dmp_param = DMPParam(1, 1, 1, 0.02, 1)
-dmp = DMP1Dim(np.zeros(1), np.zeros(1), dmp_param)
-steps = 1000
-
-times, states = simulate(dmp.execute, dmp_param.tao, steps, False)
+times, states = simulate(dmp.execute, 2*dmp_param.tao/steps, steps, False)
 plot_states(times, states)
