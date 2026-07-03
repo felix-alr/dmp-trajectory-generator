@@ -1,6 +1,6 @@
 # Trajectory Generation Using Motion Primitives
 ## Overview
-In this project, I explore approaches for trajectory generation for robot arms using movement primitives / imitation learning as a way to adapt recorded movement trajectories to a given set of boundary conditions.
+In this project, I explore approaches for trajectory generation for robot arms using movement primitives / imitation learning as a way to adapt recorded movement trajectories to a given set of environmental / physical conditions.
 
 ## Introduction
 Generating trajectories plays a key role in deploying robots in real-world environments.
