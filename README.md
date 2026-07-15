@@ -12,4 +12,27 @@ In order to generate a trajectory that satisfies a variable set of conditions re
 2. Exploring potential and limitations of each approach for the application.
 3. Finding / developing a flexible solution for the application.
 
+## Requirements
+1. variable start and end-point
+2. variable time of the complete movement
+3. prerecorded movement to shape the spatial and temporal progression
+4. timed via points for precise control of temporal and spatial progression
+5. constraints for obstacle avoidance (e.g. stay at least 5cm away from this point; stay within 5cm from this point while moving)
+6. online changes to constraints
+
+## Preliminary System Architechture For Generating Trajectories
+<img src="media/System%20Diagram%20For%20Trajectory%20Generation.png" alt="System Architecture" width="50%"/>
+
+## Approaches
+The following approaches are being considered for generating trajectories that can be varied as defined in the requirements section.
+- Classical DMP
+- ProMP
+- ProDMP
+- Trajectory Optimization
+- MCP / MPPI
+- Control Barrier Functions
+- ...
+A solution that might yield results that fulfil the requirements listed above is most likely a hybrid one, consisting of a trajectory generator in combination with an optimization step in order to fulfil the known constraints.
+When constraints change, another optimization step or even replanning the trajectory might be necessary.
+
 ## Literature
