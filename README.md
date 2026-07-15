@@ -32,7 +32,8 @@ The following approaches are being considered for generating trajectories that c
 - MCP / MPPI
 - Control Barrier Functions
 - ...
-A solution that might yield results that fulfil the requirements listed above is most likely a hybrid one, consisting of a trajectory generator in combination with an optimization step in order to fulfil the known constraints.
+
+A solution that might yield results that fulfill the requirements listed above is most likely a hybrid one, consisting of a trajectory generator in combination with an optimization step in order to fulfil the known constraints.
 When constraints change, another optimization step or even replanning the trajectory might be necessary.
 
 ## Literature
