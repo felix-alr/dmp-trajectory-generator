@@ -103,7 +103,7 @@ def plot_states(
 # alpha_y = 25 beta_y = alpha_y/4 (for critical damping)
 # alpha_x not used yet, thus simply set to 1
 # tao = 0.2
-# g = 1
+# g = []
 dmp_param = DMPParam(25, 6.25, 5, 0.02, np.array([5,10,100]))
 dmp_basis = GaussianBasis(np.array([3, 1, 1]), np.array([100, 50, 10]))
 dmp = DMPNDim(dmp_param, dmp_basis, np.reshape(np.array([[5000, 1000, 0], [-10000, -500, -5000], [500, 10000, -100]]), shape=(3,dmp_basis.get_size())))
