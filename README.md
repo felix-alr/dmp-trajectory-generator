@@ -21,7 +21,7 @@ In order to generate a trajectory that satisfies a variable set of conditions re
 6. online changes to constraints
 
 ## Preliminary System Architechture For Generating Trajectories
-<img src="media/System%20Diagram%20For%20Trajectory%20Generation.png" alt="System Architecture" width="50%"/>
+<img src="media/System%20Diagram%20For%20Trajectory%20Generation.png" alt="System Architecture" width="80%"/>
 
 ## Approaches
 The following approaches are being considered for generating trajectories that can be varied as defined in the requirements section.
